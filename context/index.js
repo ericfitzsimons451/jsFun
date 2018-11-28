@@ -20,8 +20,8 @@ const context = {
     return result;
 
     // Annotation:
-    // Because the fly method is created using ES6, the context is bound
-    // to that function.  As such, despite being created using the 'new' keyword,
+    // Because the fly method is created using ES6, 'this' is bound
+    // to that function in the global context.  As such, despite being created using the 'new' keyword,
     // ship is using a method that has a this context pointing to the window.
   },
 
@@ -55,7 +55,10 @@ const context = {
     return result;
 
     // Annotation: 
-    // 
+    // addEventListener() is the actual method that is being invoked on our 'el' variable.  We don't 
+    // actually invoke car.getInfo on that line, it is just being referenced as a result of the click.
+    // If we invoked car.getInfo, THIS would be 'car'.  But the THIS value upon clicking will be bound to
+    // the element that is using the addEventListener() method.
   },
 
   exerciseD() {
@@ -77,7 +80,8 @@ const context = {
 
     // Annotation: 
     // Because of the heavily nested nature of the location of the THIS keyword
-    // it will get lost without the use of .bind  As such, this will default to the window
+    // it will get lost without the use of .bind  As such, this will default to the window.
+    // Also, because we are using ES5 syntax, this is bound when the function is invoked.   
   },
 
   exerciseE() {
@@ -94,7 +98,8 @@ const context = {
 
     // Annotation: 
     // This is bound when the function is written, and in this case has nothing other
-    // than the window object to point towards.
+    // than the window object to point towards.  Also, because value is declared without a keyword,
+    // it will live in the global scope.  
   },
 
   exerciseF() {

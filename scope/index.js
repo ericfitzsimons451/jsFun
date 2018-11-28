@@ -75,11 +75,18 @@ const scope = {
 
     // Log D: number
 
-    const result = [{'A': 75}, {'B': 64}, {'C': 64}, {'D': 30}];
+    const result = [
+     {'A': 75},
+     {'B': 64},
+     {'C': 64},
+     {'D': 30}
+     ];
     return result;
 
     // Annotation:
-    // We declare a global variable and a numberFunction during the creation phasec
+    // We declare a global variable and set it to 30.  AFter the function body, when the function is invoked, we declare a functionally scoped variable set to 75.  Becuase the if block is used, a new block scoped variable is declared, but when we run LogA, we cannot see inside the if 
+    // block and the value is returned as 75.  Upon calling newNumber, to logB, we look up the scope chain and the value of 75 is reassigned the //value of 64 and logged at logB.  When we logC, this is still the value of the reassigned variable.  Finally, outside the function, when we logD 
+    // the global variable is referenced and returns 30.  
   },
 
   exerciseC() {
@@ -202,7 +209,11 @@ const scope = {
     return result;
 
     // Annotation:
-    // 
+    // We declare a global variable set to 'Brittany'.  We then logC, which is in the global scope and returns Brittany.  Then we invoke sayName
+    // a new variable w function scope is declared and the first if block runs, reassigning name to "nathaniel".  So, despite declaring a new, 
+    // block scoped variable inside the 2nd if block, that variable is never seen outside the block scope.  In this case, we will logA as Nathaniel.
+    // Log B will also be pointing to the original location of the functionally scoped variable, now reassigned and logB returns Nathaniel.  After
+    // the function runs, we log the global variable and it returns Brittany.
   },
 
   exerciseF() {
@@ -376,7 +387,12 @@ const scope = {
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Ah!  This one!  Very cool.  Declare a global variable and when we run eatSnack, we reassign the variable so when we logA, it is 75.  
+    // Then, upon running gorge we declare a functionally scoped variable and immediately log it inside the function, returning 0.  When we run
+    // logC, it points to the global variable, which has been reassigned to 75.  We then reassign again, adding 5 and returning 80.  When we run
+    // eatSnack for the 2nd time, the global variable is reassigned again, this time to 55 and logA, when it runs the 2nd time, logs 55.  Gorge 
+    // yourself declares the constant again, and logs 0 again.  When we run logC, we are pointing yet again to the global variable, still 55.
+    // And, since we don't hit the reassignment adding 5 to hunger, logE will also return 55.
   },
 
   exerciseJ() {
@@ -424,7 +440,15 @@ const scope = {
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We declare a global variable and set it equal to 'ketchup sandwich'.  We then immediately logA, which is 'ketchup sandwich'.
+    // 2 functinons are declared and then a global variable is inadvertently
+    // declared without a VAR keyword, which is set equal to 'kraft'.  When we run addCheese, we declare a functionally scoped variable and set it 
+    // equal to 'gouda' and when we logD, cheeseTopping is not 'kraft' but in fact, 'gouda'.  Inside the shesTheManReference function, which 
+    // is invoked immediately after we declare it, a global variable and set it equal to 'Nat Treas'. When we run addChipotle, because the 
+    // variable declaration is hoisted to the top of the function, the log returns undefined.  We then assign toppings a value, triggering the if
+    //  statement, which reassigns sandwich's value.  Outside of the function blocks, when we run logE, we are referencing the
+    // reassignment of the sandwich variable's value, and when logged, logE returns 'not a mediocre sandwich'.  LogF returns 'National Treasure'
+    // a reference to the global variable created inside the shesTheManReference function. 
   },
 
   exerciseK() {
@@ -485,7 +509,11 @@ const scope = {
     return result;
 
     // Annotation:
-    // 
+    // We declare a global variable and set it to 100.  When we run losePoints, that variable (grade) is reassigned to 90.
+    // When we run addPoints, we declare a functionally scoped variable and set it to 95, which triggers the if block.
+    // But when we run logA, we can't see inside of the block scope (to set it to 97) and logA returns 95.
+    // LogB looks at the reassigned global value becuase it is outside of the addPoints function scope.
+    // LogC also references this variable as it is in the global scope.
   },
 
   exerciseM() {
@@ -516,7 +544,10 @@ const scope = {
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We declare a global variable and set it equal to 5.  When we run first(), logA looks up the scope chain and returns 5.
+    // Num is then reassigned and logged as logB, returning 6.  When second() runs, logC wants to point to the reassigned global variable
+    // and return 6, but because the log is run before the declaration (using let rather than VAR), we get a reference error due
+    // to the variable being in the Temporal Dead Zone.  When we run logD, in the global space, it points to the reassigned value, 6.  
   },
 
   exerciseN() {
@@ -562,7 +593,11 @@ const scope = {
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We declare an instructor as a variable in the global space, and set it equal to 'Pam'.  When we run logE, in the global space,
+    // it points to the current value, Pam.  Then we run changeInstructor(), and logA returns Pam, a global variable.  As such, the if
+    // block does not get triggered and when we run logB, it still returns 'Pam'.  When we run rename(), we reassign instructor to
+    // 'Louisa', which gets logged upon running logC.  We then run logD, which is still "Louisa".  OUtside of our changeInstructor
+    // function, we run logF, which is still 'Louisa'.
   },
 
   exerciseO() {
@@ -585,7 +620,10 @@ const scope = {
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We declare a variable and set it to 'flipflop'.  We run logB, which is in the global space, and returns 'flipflop'.
+    // When we run putOnShoe(), by trying to run logA before we assign a value to the hoisted variable declaration(using VAR), 
+    // we get undefined (But not a reference error!).  When we run logC, it points to the globally scoped variable, still
+    // unchanged, and it returns 'flipflop'
   },
 
   exerciseP() {
@@ -607,7 +645,10 @@ const scope = {
 
     // Log C: lunch
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [
+    {'B': 'soup'},
+    {'C': 'soup'}
+    ];
     return result;
 
     // Annotation:
