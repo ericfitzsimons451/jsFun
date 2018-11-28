@@ -23,21 +23,26 @@ const kittyPrompts = {
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.filter(cat => cat.color === 'orange').map(kitty => kitty.name);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Filter through to find cats with orange as their color, map to just return the 
+    // names.
   },
 
   sortByAge() {
     // Sort the kitties by their age
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.sort((a, b) => {
+      return a.age - b.age;
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // To sort the kitties from youngest to oldest, use the subtraction operator
+    // This does not actually subtract one from the other, but orders them from
+    // least to greatest.
   },
 
   growUp() {
@@ -54,7 +59,7 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.filter(cat => cat.age >= 2);
     return result;
   }
 };
@@ -149,6 +154,7 @@ const modPrompts = {
 // DATASET: cakes from ./datasets/cakes
 const cakePrompts = {
   stockPerCake() {
+
     // Return an array of objects that include just the flavor of the cake and how
     // much of that cake is in stock e.g.
     // [ 
@@ -157,11 +163,19 @@ const cakePrompts = {
     //    ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((arr, currCake) => {
+      let cake = {flavor: currCake.cakeFlavor,
+      inStock: currCake.inStock}
+      arr.push(cake)
+        return arr;
+        }, [])
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We need to create 2 properties on each object in our returned array.  
+    // We do this using reduce because we can create an object and set properties
+    // on it.  Using object literals we can set our values with hardcoded keys.
+    // Then we just need to push each new object into the final array
   },
 
   onlyInStock() {
@@ -185,22 +199,27 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const result = cakes.filter(cake => cake.inStock > 0);
+      return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // After filtering for cakes that have an inStock value greater than zero, 
+    // we can just return the filtered array
   },
   
   totalInventory() {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, cake) => {
+      acc += cake.inStock
+    return acc;
+    }, 0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Reduce lets us return a new data type.  We sum up the total cakes and 
+    // return the accumulated value.
   },
 
   allToppings() {
@@ -226,11 +245,21 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, currCake) => {
+      currCake.toppings.forEach(topping => {
+      if (acc.indexOf(topping) === -1) {
+      acc.push(topping)
+        }
+      })
+      return acc;
+      }, []);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We need reduce because we are going to create a new array from objects.
+    // Iterating over the toppings array with forEach, we ask if something does 
+    // exist in our array, and if it does not, we push it in.  This makes sure 
+    // we don't get duplicates.
   }
 };
 
