@@ -33,9 +33,9 @@ const kittyPrompts = {
 
   sortByAge() {
     // Sort the kitties by their age
-
-    const result = kitties.sort((a, b) => {
-      return a.age - b.age;
+    let sortedKitties = [...kitties]
+    const result = sortedKitties.sort((a, b) => {
+      return b.age - a.age;
     });
     return result;
 
@@ -59,7 +59,10 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    const result = kitties.filter(cat => cat.age >= 2);
+    const result = kitties.map((cat) => {
+      cat.age += 2
+      return cat
+    })
     return result;
   }
 };
@@ -91,11 +94,23 @@ const clubPrompts = {
     //   ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = clubs.reduce((obj, currentClub) => {
+      currentClub.members.forEach(person => {
+        if (!obj[person]) {
+        obj[person] = []
+      } 
+        obj[person].push(currentClub.club)
+     })
+  
+        return obj;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Use reduce because we are creating an object.  Use forEach to look at each
+    // person in the members array.  If there is no key with that person's name
+    // set the key and set its initial value to an empty array.  For every key
+    // push in the current club value, because it will correspond to the person.
   }
 };
 
@@ -127,11 +142,22 @@ const modPrompts = {
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = mods.map(mod => {
+      // create studentsPerInstructor variable
+      // assign it to mod.students / mod.instructors
+      // return an object with the mod number and studentsPerInstructor
+    let studentsPer = mod.students / mod.instructors
+    return {mod: mod.mod, studentsPerInstructor: studentsPer}
+        });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We are returning an array of the same length, with some changes.
+    // We map over the array and create a variable that will
+    // house the average of students per instructor, named as such.
+    // I then need to return an object.  I hardcode the key names and use dot notation to access the value of mod to be inserted into the value.  
+    // I then hardcode studentsPerInstructor to set the key
+    // and set my value equal to the variable I created.
   }
 };
 
@@ -227,7 +253,14 @@ const cakePrompts = {
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((arr, current) => {
+      current.toppings.forEach((topping) => {
+        if (arr.indexOf(topping) === -1) {
+      arr.push(topping)
+        }
+      })
+      return arr;
+    }, []);
     return result;
 
     // Annotation:
@@ -245,14 +278,15 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    const result = cakes.reduce((acc, currCake) => {
-      currCake.toppings.forEach(topping => {
-      if (acc.indexOf(topping) === -1) {
-      acc.push(topping)
-        }
-      })
-      return acc;
-      }, []);
+    const result = cakes.reduce((obj, currentCake) => {
+      currentCake.toppings.forEach((topping) => {
+        if (!obj[topping]) {
+      obj[topping] = 0
+      }
+      obj[topping] ++  
+    })
+      return obj;
+    }, {})
     return result;
 
     // Annotation:
@@ -290,11 +324,12 @@ const classPrompts = {
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.filter(room => room.program === "FE");
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Filter through the array and check to see if the program key holds
+    // values that are equal to 'FE'.  
   },
 
   totalCapacities() {
@@ -305,21 +340,36 @@ const classPrompts = {
     //   beCapacity: 96
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.reduce((obj, current) => {
+      if (current.program === 'FE') {
+        obj.FE += current.capacity
+      } else {
+      obj.BE += current.capacity
+    }
+    return obj;
+      }, {FE: 0,
+          BE: 0});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Use reduce becuase the length of the array will be different from the dataset.
+    // Set up the reduce so that the initial value of the returned object sets the base
+    // count of FE and BE to 0.  This way, we won't overwrite the value each time.
+    // Then, we check to see if the current program is equal to FE/BE and if so, add
+    // to the accumulated value in the returned object.
   },
 
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.sort((a, b) => {
+      return a.capacity - b.capacity
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Look into the classrooms array and sort the capacity property from least
+    // to greatest.
   }
 };
 
@@ -345,11 +395,15 @@ const breweryPrompts = {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.reduce((sum, currentBrewery) => {
+      sum += currentBrewery.beers.length
+    return sum;
+    }, 0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Let's use reduce becuase we are getting a sum of the total beers.  
+    // Looks at the length of the beers property on each iteration and add that to // the accumulator.
   },
 
   getBreweryBeerCount() {
@@ -361,11 +415,15 @@ const breweryPrompts = {
     // ...etc.
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.map((brewery) => {
+      return {name: brewery.name, beerCount: brewery.beers.length}
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We are returning an array of the same length, but with some changes, so
+    // we use .map.  When we return the desired array of objects, we hardcode the
+    // property names and use dot notation to access the values.
   },
 
   findHighestAbvBeer() {
