@@ -614,7 +614,7 @@ const scope = {
 
     const result = [
     {'B': 'flipflop'},
-    {'A': 'undefined'},
+    {'A': undefined},
     {'C': 'flipflop'}
     ];
     return result;
@@ -652,7 +652,10 @@ const scope = {
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Log A does not ever hit because the variable declaration that is 
+    // referenced returns undefined, a falsy value.  So only the 2nd if
+    // block is triggered, reassigning B to 'soup'.  And because when we 
+    // 
   },
 
   exerciseQ(){
@@ -685,7 +688,7 @@ const scope = {
 
     myCrazyKidAntics(myKid);
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{'A': 'Pandora'}, {'B': ['Antigone', 'Pandora']}, {'C': 'Mandy'}, {'D': 'Antigone'}, {'E': 'Pandora'}];
     return result;
 
     // Annotation:
@@ -712,7 +715,7 @@ const scope = {
     parentFunc();
     // Log D: myName
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{'A': 'Rody'}, {'B': 'RodyToy'}, {'C': 'Tesla'}, {'D': 'RodyToyDaniels'}];
     return result;
 
     // Annotation:
